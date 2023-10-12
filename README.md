@@ -5,21 +5,25 @@
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [General Rules](#general-rules)
-3. [Exercise 00: Bitcoin Exchange](#exercise-00-bitcoin-exchange)
-4. [Exercise 01: Reverse Polish Notation](#exercise-01-reverse-polish-notation)
-5. [Exercise 02: PmergeMe](#exercise-02-pmergeme)
-6. [Submission and Peer-Evaluation](#submission-and-peer-evaluation)
+2. [Exercise 00: Bitcoin Exchange](#exercise-00-bitcoin-exchange)
+3. [Exercise 01: Reverse Polish Notation](#exercise-01-reverse-polish-notation)
+4. [Exercise 02: PmergeMe](#exercise-02-pmergeme)
+5. [Conclusion](#conclusion)
+6. [License](#license)
 
 ## Introduction
 
 Module 09 focuses on utilizing the Standard Template Library (STL) in C++. It covers various exercises that involve working with containers, algorithms, and more.
+Definitions of containers and algorithms are as follows:
 
-## General Rules
+- **Containers**: A container is a holder object that stores a collection of other objects (its elements). They are implemented as class templates, which allows a great flexibility in the types supported as elements. The container manages the storage space for its elements and provides member functions to access them, either directly or through iterators (reference: [cplusplus.com](http://www.cplusplus.com/reference/stl/)).
 
-- Compiling: Compile your code with `c++` and the flags `-Wall -Wextra -Werror`. Your code should still compile if you add the flag `-std=c++98`.
-- Formatting and naming conventions: Follow the provided guidelines for naming files, classes, functions, and member functions.
-- Allowed/Forbidden: You are allowed to use almost everything from the standard library, but external libraries like C++11 and Boost are forbidden.
+- **Algorithms**: Algorithms are functions that operate on ranges of elements. These operations include initializing, sorting, searching, and transforming (reference: [cplusplus.com](http://www.cplusplus.com/reference/algorithm/)).
+
+The STL is a powerful tool that allows for the creation of robust C++ programs. It provides a wide variety of containers and algorithms that can be used to solve various problems. Containers allow for the storage of data, while algorithms allow for the manipulation of data. The STL is a great resource that can be used to create efficient and effective C++ programs.
+
+To better follow the exercises, it is recommended to use the [en.subject.pdf](subject.pdf).
+
 
 ## Exercise 00: Bitcoin Exchange
 
@@ -68,3 +72,12 @@ This exercise reinforces understanding of sorting algorithms and their efficienc
 - Sorting Algorithms
 - Time Complexity Analysis
 - Algorithm Efficiency
+
+## Conclusion
+
+The Standard Template Library (STL) is a powerful tool that allows for the creation of robust C++ programs. It provides a wide variety of containers and algorithms that can be used to solve various problems. Containers allow for the storage of data, while algorithms allow for the manipulation of data. The STL is a great resource that can be used to create efficient and effective C++ programs.
+
+
+## License
+    
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
