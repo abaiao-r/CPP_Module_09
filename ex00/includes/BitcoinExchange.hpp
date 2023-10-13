@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:03:16 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/12 15:50:53 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/10/13 20:38:34 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@
 #include <cmath>
 #include <ctime>
 #include <cstdlib>
+#include <limits>
 #include "colours.hpp"
+
 
 class BitcoinExchange
 {
@@ -32,14 +34,27 @@ class BitcoinExchange
         std::map<std::string, float> _bitcoinPrices;
     
     public:
-        BitcoinExchange();
+        BitcoinExchange(void);
         BitcoinExchange(const BitcoinExchange &src);
-        ~BitcoinExchange();
+        ~BitcoinExchange(void);
 
         BitcoinExchange &operator=(const BitcoinExchange &src);
 
-        void loadDatabase(const std::string &filename); // this is the function that will load the database from the file
-        void evaluatePrices(const std::string &inputFilename); // this is the function that will read the input file and evaluate the prices
-}
+
+        // print the raw _bitcoinPrices
+        void printRaw(void);
+        // extract info from data.csv and store in _bitcoinPrices
+        void extractInfo(std::string inputFile);
+        //validate info (string) from _bitcoinPrices
+        bool validateDate(std::string date);
+        //validate info (float) from _bitcoinPrices
+        float validateValue(std::string value);
+        //receives input file and checks line per line if date is valid and if price is valid. If are valid then lookup at _bitcoinPrices for the date, calculates the value with exchange rate and prints it.
+        void printValue(std::string inputFile);
+        // look up for closest date that occurred in _bitcoinPrices and returns the value
+        float lookup(std::string date);
+        // check if year is leap
+        bool isLeap(int year);
+};
 
 #endif

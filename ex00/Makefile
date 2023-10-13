@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
+#    By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/21 15:08:37 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/10/12 14:57:21 by andrefranci      ###   ########.fr        #
+#    Updated: 2023/10/13 19:45:54 by abaiao-r         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,8 @@ OBJDIR = objs
 
 # Source Files
 
-SRCS =  $(SRCDIR)/main.cpp
+SRCS =  $(SRCDIR)/main.cpp \
+		$(SRCDIR)/BitcoinExchange.cpp
 
 		
 OBJS = 	$(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
@@ -43,11 +44,40 @@ run:	fclean all
 re:		fclean all
 
 test: 	all
-		./$(NAME)
+		./$(NAME) input_file.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/bad_header.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/bad.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/empty.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/empty_line.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/good.txt
+		@echo "\n-------------------\n"
+		./$(NAME) csv_input/no_records.txt
 
 
 valgrind: fclean all
 		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
+valgrind_test: fclean all
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) input_file.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/bad_header.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/bad.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/empty.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/empty_line.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/good.csv
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/no_records.txt
+		@echo "\n-------------------\n"
+		valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) csv_input/ds.txt
 
 $(NAME): 	$(OBJS)
 			$(CXX) $(OBJS) $(CXXFLAGS) -o  $(NAME) 
