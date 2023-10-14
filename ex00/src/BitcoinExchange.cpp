@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:17:01 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/13 20:43:41 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/10/14 17:00:01 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,44 +46,64 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &src)
     return (*this);
 }
 
-/* extract info from input file and store in _bitcoinPrices */
-void BitcoinExchange::extractInfo(std::string inputFile)
+/* Open and validate the input file */
+bool openInputFile(const std::string& inputFile, std::ifstream& file) 
 {
-    std::ifstream file(inputFile.c_str());
+    file.open(inputFile.c_str());
+    if (!file.is_open()) 
+    {
+        std::cout << RED << "Error: Failed to open the input file!" << RESET 
+            << std::endl;
+        return false;
+    }
+    return true;
+}
+
+/* Check if the file is empty */
+bool isFileEmpty(std::ifstream& file)
+{
+    return file.peek() == std::ifstream::traits_type::eof();
+}
+
+/* Process each line in the input file and store data in _bitcoinPrices */
+void processFileLines(std::ifstream& file, std::map<std::string, float>& _bitcoinPrices) 
+{
     std::string line;
     std::string key;
     float value;
 
-    if (!file.is_open())
+    // Skip the header line
+    std::getline(file, line);
+    while (std::getline(file, line))
     {
-        std::cout << RED << "Error: Failed to open the input file!" << RESET << std::endl;
-        exit(1);
+        if (line.find(',') == std::string::npos)
+        {
+            key = line;
+            value = NAN;
+        } 
+        else
+        {
+            key = line.substr(0, line.find(','));
+            value = strtod(line.substr(line.find(',') + 1).c_str(), NULL);
+        }
+        _bitcoinPrices.insert(std::pair<std::string, float>(key, value));
     }
-    // check if file is empty
-    if (file.peek() == std::ifstream::traits_type::eof())
+}
+
+/* Extract info from input file and store in _bitcoinPrices */
+void BitcoinExchange::extractInfo(std::string inputFile)
+{
+    std::ifstream file;
+    
+    if (!openInputFile(inputFile, file))
+        exit(1);
+    if (isFileEmpty(file))
     {
         std::cout << RED << "Error: Input file is empty!" << RESET << std::endl;
         file.close();
         exit(1);
     }
-    // check if has header, if has header, skip it if not, continue
-    std::getline(file, line);
-    while (std::getline(file, line))
-    {
-
-        if (line.find(',') == std::string::npos) // if no , in line
-        {
-            key = line;
-            value = NAN;
-        }
-        else // if , in line
-        {
-            key = line.substr(0, line.find(','));
-            value = std::strtod(line.substr(line.find(',') + 1).c_str(), NULL);
-        }
-        //insert key and value in _bitcoinPrices
-        _bitcoinPrices.insert(std::pair<std::string, float>(key, value));
-    }
+    processFileLines(file, _bitcoinPrices);
     file.close();
 }
 
@@ -115,15 +135,26 @@ void BitcoinExchange::printValue(std::string inputFile)
 
     if (!file.is_open())
     {
-        std::cout << RED << "Error: Failed to open the input file!" << RESET << std::endl;
+        std::cerr << RED << "Error: Failed to open the input file!" << RESET << std::endl;
         return ;
     }
     // check if has header, if has header, skip it if not, continue
-    std::getline(file, line);
+    if (std::getline(file, line))
+    {
+       if (line != "date | value")
+       {
+            std::cerr << RED << "Error: bad header => " << line << RESET 
+                << std::endl;
+            std::cerr << RED << "Header should be: <date> | <value>" << RESET 
+                << std::endl;
+            file.close();
+           return ;
+       }
+    }
     // check if file is empty
     if (file.peek() == std::ifstream::traits_type::eof())
     {
-        std::cout << RED << "Error: Input file is empty!" << RESET << std::endl;
+        std::cerr << RED << "Error: Input file is empty!" << RESET << std::endl;
         file.close();
         return ;
     }
@@ -175,6 +206,32 @@ bool BitcoinExchange::validateDate(std::string date)
     int month;
     int day;
     int year;
+    int i;
+
+    // check if date has yyyy-mm-dd format. skip white spaces and check if has 10 chars
+    //skip white spaces
+    while (date[0] == ' ')
+        date.erase(0, 1);
+    if (date[4] != '-' && date[7] != '-')
+    {
+        std::cerr << RED << "Error: bad date => " << date << RESET 
+            << std::endl;
+        return (false);
+    }
+    for (i = 0; date[i] != '\0'; i++)
+    {
+        if (i == 4 || i == 7)
+            continue;
+        if (std::isdigit(date[i]) == false)
+            break;
+    }
+    std::cout << "i = " << i << std::endl;
+    if (i != 10)
+    {
+        std::cerr << RED << "Error: bad date format should be yyyy-mm-dd => "
+            << date << RESET << std::endl;
+        return (false);
+    }
 
     if (!strptime(date.c_str(), "%Y-%m-%d", &time))
     {
