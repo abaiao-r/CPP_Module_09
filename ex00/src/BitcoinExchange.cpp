@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
+/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 15:17:01 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/14 17:00:01 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/10/15 13:27:10 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,14 +225,12 @@ bool BitcoinExchange::validateDate(std::string date)
         if (std::isdigit(date[i]) == false)
             break;
     }
-    std::cout << "i = " << i << std::endl;
     if (i != 10)
     {
         std::cerr << RED << "Error: bad date format should be yyyy-mm-dd => "
             << date << RESET << std::endl;
         return (false);
     }
-
     if (!strptime(date.c_str(), "%Y-%m-%d", &time))
     {
         std::cerr << RED << "Error: bad date => " << date << RESET 
@@ -303,20 +301,20 @@ float BitcoinExchange::validateValue(std::string value)
                 dotCount++;
                 if (dotCount > 1)
                 {
-                    std::cerr << RED << "Error: bad input 2=> " << value << RESET 
-                        << std::endl;
+                    std::cerr << RED << "Error: bad input 2=> " << value 
+                        << RESET << std::endl;
                     return (-1);
                 }
                 if (value[i] == '.' && value[i + 1] == '\0')
                 {
-                    std::cerr << RED << "Error: bad input => dot. nothing " << value << RESET 
-                        << std::endl;
+                    std::cerr << RED << "Error: bad input => dot. nothing " 
+                        << value << RESET << std::endl;
                     return (-1);
                 }
                 continue;   
             }
-            std::cerr << RED << "Error: bad input => not a digit" << value[i] << RESET 
-                << std::endl;
+            std::cerr << RED << "Error: bad input => not a digit " << value[i] 
+                << RESET << std::endl;
             return (-1);
         }
     }

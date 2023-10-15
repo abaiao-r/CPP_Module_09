@@ -6,7 +6,7 @@
 #    By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/21 15:08:37 by abaiao-r          #+#    #+#              #
-#    Updated: 2023/10/15 02:38:11 by andrefranci      ###   ########.fr        #
+#    Updated: 2023/10/15 13:41:34 by andrefranci      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,13 @@ OBJDIR = objs
 # Source Files
 
 SRCS =  $(SRCDIR)/main.cpp \
-		$(SRCDIR)/BitcoinExchange.cpp
+		$(SRCDIR)/PmergeMe.cpp
 
 		
 OBJS = 	$(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 # Targets
-NAME = btc
+NAME = PmergeMe
 
 all: 	$(NAME)
 

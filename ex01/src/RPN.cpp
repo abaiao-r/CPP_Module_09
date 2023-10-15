@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:16:46 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/10/15 02:25:10 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/10/15 02:34:02 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,34 +15,34 @@
 /* Default Constructor */
 RPN::RPN(void)
 {
-    std::cout << CYAN << "RPN default constructor called" << RESET << std::endl;
-    return;
+	std::cout << CYAN << "RPN default constructor called" << RESET << std::endl;
+	return ;
 }
 
 /* Copy Constructor */
 RPN::RPN(RPN const &src)
 {
-    std::cout << CYAN << "RPN copy constructor called" << RESET << std::endl;
-    *this = src;
-    return;
+	std::cout << CYAN << "RPN copy constructor called" << RESET << std::endl;
+	*this = src;
+	return ;
 }
 
 /* Destructor */
 RPN::~RPN(void)
 {
-    std::cout << RED << "RPN destructor called" << RESET << std::endl;
-    return;
+	std::cout << RED << "RPN destructor called" << RESET << std::endl;
+	return ;
 }
 
 /* Assignment operator overload (Update) */
 RPN &RPN::operator=(RPN const &src)
 {
-    std::cout << CYAN << "RPN assignment operator called" << RESET << std::endl;
-    if (this != &src)
-    {
-        this->_rpn_stack = src._rpn_stack;
-    }
-    return (*this);
+	std::cout << CYAN << "RPN assignment operator called" << RESET << std::endl;
+	if (this != &src)
+	{
+		this->_rpn_stack = src._rpn_stack;
+	}
+	return (*this);
 }
 
 /* printResult:
@@ -52,20 +52,20 @@ RPN &RPN::operator=(RPN const &src)
 */
 void RPN::printResult(void)
 {
-    if (this->_rpn_stack.size() > 1)
-    {
-        std::cerr << BOLDRED << "Error: " << RESET 
-            << "Too many numbers in stack" << std::endl;
-        return;
-    }
-    else if (this->_rpn_stack.size() == 0)
-    {
-        std::cerr << BOLDRED << "Error: " << RESET 
-            << "No numbers in stack" << std::endl;
-        return;
-    }
-    std::cout << this->_rpn_stack.top() << std::endl;
-    return;
+	if (this->_rpn_stack.size() > 1)
+	{
+		std::cerr << BOLDRED << "Error: " << RESET
+					<< "Too many numbers in stack" << std::endl;
+		return ;
+	}
+	else if (this->_rpn_stack.size() == 0)
+	{
+		std::cerr << BOLDRED << "Error: " << RESET
+					<< "No numbers in stack" << std::endl;
+		return ;
+	}
+	std::cout << this->_rpn_stack.top() << std::endl;
+	return ;
 }
 
 /* performOperation:
@@ -74,31 +74,30 @@ void RPN::printResult(void)
 */
 void RPN::performOperation(std::string token)
 {
-    int num1;
-    int num2;
+	int	num1;
+	int	num2;
 
-    num1 = this->_rpn_stack.top();
-    this->_rpn_stack.pop();
-    num2 = this->_rpn_stack.top();
-    this->_rpn_stack.pop();
-    
-    if (token == "+")
-        this->_rpn_stack.push(num2 + num1);
-    else if (token == "-")
-        this->_rpn_stack.push(num2 - num1);
-    else if (token == "*")
-        this->_rpn_stack.push(num2 * num1);
-    else if (token == "/")
-    {
-        if(num1 == 0)
-        {
-            std::cerr << BOLDRED << "Error: " << RESET 
-                << "Division by zero" << std::endl;
-            return;
-        }
-        else
-            this->_rpn_stack.push(num2 / num1);
-    }
+	num1 = this->_rpn_stack.top();
+	this->_rpn_stack.pop();
+	num2 = this->_rpn_stack.top();
+	this->_rpn_stack.pop();
+	if (token == "+")
+		this->_rpn_stack.push(num2 + num1);
+	else if (token == "-")
+		this->_rpn_stack.push(num2 - num1);
+	else if (token == "*")
+		this->_rpn_stack.push(num2 * num1);
+	else if (token == "/")
+	{
+		if (num1 == 0)
+		{
+			std::cerr << BOLDRED << "Error: " << RESET
+						<< "Division by zero" << std::endl;
+			return ;
+		}
+		else
+			this->_rpn_stack.push(num2 / num1);
+	}
 }
 
 /* handleLargeToken:
@@ -107,22 +106,21 @@ void RPN::performOperation(std::string token)
 */
 bool RPN::handleLargeToken(std::string token)
 {
-    if (token.length() > 1)
-    {
-        if (token[0] == '-')
-        {
-            std::cerr << BOLDRED << "Error: " << RESET 
-                << "Negative number" << std::endl;
-            return (false);
-        }
-        if (token[0] == '+' && token.length() <= 2)
-            return (true);
-        std::cerr << BOLDRED << "Error: " << RESET 
-            << "Number with more than 1 digit" << std::endl;
-        return (false);
-    
-    }
-    return (true);
+	if (token.length() > 1)
+	{
+		if (token[0] == '-')
+		{
+			std::cerr << BOLDRED << "Error: " << RESET
+						<< "Negative number" << std::endl;
+			return (false);
+		}
+		if (token[0] == '+' && token.length() <= 2)
+			return (true);
+		std::cerr << BOLDRED << "Error: " << RESET
+					<< "Number with more than 1 digit" << std::endl;
+		return (false);
+	}
+	return (true);
 }
 
 /* checkStr:
@@ -131,15 +129,15 @@ bool RPN::handleLargeToken(std::string token)
 */
 bool RPN::checkStr(std::string str)
 {
-    if (str.find_first_not_of("0123456789+-*/ ") != std::string::npos)
-    {
-        std::cerr << BOLDRED << "Error: " << RESET 
-            << "Invalid character " 
-            << "'" << str[str.find_first_not_of("0123456789+-*/ ")] << "'" 
-            << std::endl; 
-        return (false);
-    }
-    return (true);
+	if (str.find_first_not_of("0123456789+-*/ ") != std::string::npos)
+	{
+		std::cerr << BOLDRED << "Error: " << RESET
+					<< "Invalid character "
+					<< "'" << str[str.find_first_not_of("0123456789+-*/ ")] << "'"
+					<< std::endl;
+		return (false);
+	}
+	return (true);
 }
 
 /* rpncalc:
@@ -152,37 +150,38 @@ bool RPN::checkStr(std::string str)
 */
 void RPN::rpncalc(std::string str)
 {
-    std::stringstream ss(str);
-    std::string token;
-    int num;
+	int	num;
 
-    if (!checkStr(str))
-        return ;
-    while (ss >> token)
-    {
-        if (std::stringstream(token) >> num)
-        {    
-            if (!handleLargeToken(token))
-                return ;
-            this->_rpn_stack.push(num);
-        }
-        else if (token == "+" || token == "-" || token == "*" || token == "/")
-        {
-            if (this->_rpn_stack.size() < 2)
-            {
-                std::cerr << BOLDRED << "Error: " << RESET 
-                    << "Not enough numbers in stack" << std::endl;
-                return;
-            }
-            performOperation(token);
-        }
-        else
-        {
-            std::cerr << BOLDRED << "Error: " << RESET 
-                << "Invalid character " << "'" << token << "'" << std::endl; 
-            return;
-        }
-    }
-    printResult();
-    return;
+	std::stringstream ss(str);
+	std::string token;
+	if (!checkStr(str))
+		return ;
+	while (ss >> token)
+	{
+		if (std::stringstream(token) >> num)
+		{
+			if (!handleLargeToken(token))
+				return ;
+			this->_rpn_stack.push(num);
+		}
+		else if (token == "+" || token == "-" || token == "*" || token == "/")
+		{
+			if (this->_rpn_stack.size() < 2)
+			{
+				std::cerr << BOLDRED << "Error: " << RESET
+							<< "Not enough numbers in stack" << std::endl;
+				return ;
+			}
+			performOperation(token);
+		}
+		else
+		{
+			std::cerr << BOLDRED << "Error: " << RESET
+						<< "Invalid character "
+						<< "'" << token << "'" << std::endl;
+			return ;
+		}
+	}
+	printResult();
+	return ;
 }

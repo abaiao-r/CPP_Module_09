@@ -6,7 +6,7 @@
 /*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 15:15:50 by abaiao-r          #+#    #+#             */
-/*   Updated: 2023/10/15 02:07:20 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/10/15 02:33:30 by andrefranci      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ class RPN
 
 	RPN &operator=(RPN const &src);
 
-    // auxiliary functions
-    bool checkStr(std::string str);
-    bool handleLargeToken(std::string token);
-    void performOperation(std::string token);
-    void printResult(void);
-    // principal function
+	// auxiliary functions
+	bool checkStr(std::string str);
+	bool handleLargeToken(std::string token);
+	void performOperation(std::string token);
+	void printResult(void);
+	// principal function
 	void rpncalc(std::string str);
 };
 
