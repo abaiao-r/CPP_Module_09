@@ -69,7 +69,7 @@ bool PmergeMe::validateArgs(int ac, char **av)
         }
         for (j = 0; av[i][j]; j++)
         {
-            if (!std::digit(av[i][j]))
+            if (!std::isdigit(av[i][j]))
             {
                 std::cout << BOLDRED << "Error: '" << RESET << av[i][j] 
                     << BOLDRED << "' is not a digit" << RESET << std::endl;
@@ -136,7 +136,93 @@ void PmergeMe::storeList(int ac, char **av)
 }
 
 /* doFordJohnsonVector:
+**
+1. Group the elements of X into floor(n/2) pairs of elements, arbitrarily,
+   leaving one element unpaired if there is an odd number of elements.
+
+2. Perform floor(n/2) comparisons, one per pair, to determine the larger
+   of the two elements in each pair.
+
+3. Recursively sort the floor(n/2) larger elements from each pair, creating
+   a sorted sequence S of floor(n/2) of the input elements, in ascending order.
+
+4. Insert at the start of S the element that was paired with the first and
+   smallest element of S.
+
+5. Insert the remaining ceil(n/2) - 1 elements of X \ S into S, one at a time,
+   with a specially chosen insertion ordering. Use binary search in subsequences
+   of S (as described below) to determine the position at which each element
+   should be inserted.
+*/
+void PmergeMe::doFordJohnsonVector()
+{
+    int i;
+    int pairSize;
+
+
+    // 1. Group the elements of X into floor(n/2) pairs of elements
+    i = 0;
+    while(this->pmergeVector.size() > 0)
+    {
+        std::vector<int> pair;
+        if (this->pmergeVector.size() == 1)
+        {
+            pair.push_back(this->pmergeVector[0]);
+            this->pmergeVector.erase(this->pmergeVector.begin());
+            this->pmergeVector.push_back(pair[0]);
+            break ;
+        }
+        pair.push_back(this->pmergeVector[0]);
+        this->pmergeVector.erase(this->pmergeVector.begin());
+        pair.push_back(this->pmergeVector[0]);
+        this->pmergeVector.erase(this->pmergeVector.begin());
+        i++;
+    }
+    pairSize = i;
+    i = 0;
+
+    // 2. Perform floor(n/2) comparisons, one per pair, to determine the larger
+    while ( i < pairSize)
+    {
+        if (pair[i][0] > pair[i][1])
+        {
+            int tmp = pair[i][0];
+            pair[i][0] = pair[i][1];
+            pair[i][1] = tmp;
+        }
+        i++;
+    }
+
+    // 3. Recursively sort the floor(n/2) larger elements from each pair, creating
+    //    a sorted sequence S of floor(n/2) of the input elements, in ascending order.
 
 
 
+
+
+
+
+
+    
+    
+}
+
+/* printVector:
+** print the vector*/
+void PmergeMe::printVector(void)
+{
+    std::cout << "Vector: ";
+    for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+/* printTimeUsedVector:
+** calculate the time used by the algorithm to sort the vector
+** print the time used*/
+void PmergeMe::printTimeUsedVector(void)
+{
+    std::cout << "Time used by the algorithm to sort the vector: ";
+    std::cout << std::endl;
+}
 

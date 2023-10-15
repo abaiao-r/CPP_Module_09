@@ -25,7 +25,11 @@
 # include <set>
 # include <ctime>
 # include <cstdlib>
-# include <limits>
+# include <cmath>
+# include <climits>
+# include <cctype>
+# include <cstring>
+
 
 
 # include "colours.hpp"
@@ -53,19 +57,15 @@ class PmergeMe
         
         // do ford johnson algorithm to sort the vector
         void doFordJohnsonVector(void);
-        // print unsorted vector
-        void printUnsortedVector(void);
-        // print sorted vector
-        void printSortedVector(void);
+        // print vector
+        void printVector(void);
         // time used by the algorithm to sort the vector
         void printTimeUsedVector(void);
 
         // do ford johnson algorithm to sort the list
         void doFordJohnsonList(void);
-        // print unsorted list
-        void printUnsortedList(void);
-        // print sorted list
-        void printSortedList(void);
+        // print list
+        void printList(void);
         // time used by the algorithm to sort the list
         void printTimeUsedList(void);
 

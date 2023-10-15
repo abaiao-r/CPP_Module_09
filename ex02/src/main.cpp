@@ -10,21 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include ".../includes/PmergeMe.hpp"
+#include "../includes/PmergeMe.hpp"
 
 int	main(int ac, char **av)
 {
 	PmergeMe	pmergeMe;
 
-	if (pmergeMe.validateArgs(ac, av))
+	if (pmergeMe.validateArgs(ac, av) && pmergeMe.checkPositiveIntegers(ac, av))
 	{
-		pmergeMe.doFordJohnson();
-		pmergeMe.printUnsortedVector();
-		pmergeMe.printSortedVector();
+		pmergeMe.storeVector(ac, av);
+		pmergeMe.printVector();
+		pmergeMe.doFordJohnsonVector();
+		pmergeMe.printVector();
 		pmergeMe.printTimeUsedVector();
-		pmergeMe.printUnsortedList();
-		pmergeMe.printSortedList();
-		pmergeMe.printTimeUsedList();
 	}
 	return (0);
 }
