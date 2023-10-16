@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:33:25 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/15 13:58:00 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/10/16 18:15:36 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ int	main(int ac, char **av)
 	if (pmergeMe.validateArgs(ac, av) && pmergeMe.checkPositiveIntegers(ac, av))
 	{
 		pmergeMe.storeVector(ac, av);
+		std::cout << "Before sorting ";
 		pmergeMe.printVector();
 		pmergeMe.doFordJohnsonVector();
+		std::cout << "After sorting ";
 		pmergeMe.printVector();
 		pmergeMe.printTimeUsedVector();
 	}
 	return (0);
 }
+

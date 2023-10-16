@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: andrefrancisco <andrefrancisco@student.    +#+  +:+       +#+        */
+/*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:38 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/15 14:42:04 by andrefranci      ###   ########.fr       */
+/*   Updated: 2023/10/16 21:38:56 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ bool PmergeMe::checkPositiveIntegers(int ac, char **av)
             return (false);
         }
         tmp = std::atol(av[i]);
-        if (tmp > INT_MAX || tmp < 0)
+        if (tmp > INT_MAX || tmp <= 0)
         {
             std::cout << BOLDRED << "Error: " << RESET << "Number '" << tmp 
                 << BOLDRED << "' is out of range. Only positive integers " 
@@ -154,57 +154,115 @@ void PmergeMe::storeList(int ac, char **av)
    of S (as described below) to determine the position at which each element
    should be inserted.
 */
-void PmergeMe::doFordJohnsonVector()
+
+std::vector<int> groupPairsVector(std::vector<int> &pmergeVector) {
+    std::vector<int> pairs;
+    size_t n = pmergeVector.size();
+    size_t i = 0;
+
+    while (i < n) {
+        if (i + 1 < n && pmergeVector[i] > pmergeVector[i + 1]) {
+            pairs.push_back(pmergeVector[i]);
+        } else {
+            pairs.push_back(pmergeVector[i + 1]);
+        }
+        i += 2;
+    }
+
+    if (n % 2 == 1) {
+        pairs.push_back(pmergeVector[n - 1]);
+    }
+
+    return pairs;
+}
+
+std::vector<int> sortedLargerElementsVector(std::vector<int> &pairs) {
+    if (pairs.size() <= 1) {
+        return pairs;
+    }
+
+    size_t mid = pairs.size() / 2;
+    std::vector<int> left(pairs.begin(), pairs.begin() + mid);
+    std::vector<int> right(pairs.begin() + mid, pairs.end());
+
+    left = sortedLargerElementsVector(left);
+    right = sortedLargerElementsVector(right);
+
+    std::vector<int> sorted;
+    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::back_inserter(sorted));
+    return sorted;
+}
+
+std::vector<int> insertPairedElementVector(std::vector<int> &sorted, int pairedElement) {
+    std::vector<int> result;
+    result.push_back(pairedElement);
+    result.insert(result.end(), sorted.begin(), sorted.end());
+    return result;
+}
+
+std::vector<int> insertRemainingVector(std::vector<int> &pmergeVector, std::vector<int> &S) {
+    std::vector<int> remaining;
+
+    for (size_t i = 0; i < pmergeVector.size(); ++i)
+    {
+        if (std::find(S.begin(), S.end(), pmergeVector[i]) == S.end()) {
+            remaining.push_back(pmergeVector[i]);
+        }
+    }
+
+    for (size_t i = 0; i < remaining.size(); ++i)
+    {
+        std::vector<int>::iterator it = std::lower_bound(S.begin(), S.end(), remaining[i]);
+        S.insert(it, remaining[i]);
+    }
+
+    return S;
+}
+
+void PmergeMe::doFordJohnsonVector() 
 {
-    int i;
-    int pairSize;
+    std::vector<int> pairs = groupPairsVector(this->pmergeVector);
 
+    std::cout << "Print Pairs: ";
+    for (std::vector<int>::iterator it = pairs.begin(); it != pairs.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
 
-    // 1. Group the elements of X into floor(n/2) pairs of elements
-    i = 0;
-    while(this->pmergeVector.size() > 0)
-    {
-        std::vector<int> pair;
-        if (this->pmergeVector.size() == 1)
-        {
-            pair.push_back(this->pmergeVector[0]);
-            this->pmergeVector.erase(this->pmergeVector.begin());
-            this->pmergeVector.push_back(pair[0]);
-            break ;
-        }
-        pair.push_back(this->pmergeVector[0]);
-        this->pmergeVector.erase(this->pmergeVector.begin());
-        pair.push_back(this->pmergeVector[0]);
-        this->pmergeVector.erase(this->pmergeVector.begin());
-        i++;
-    }
-    pairSize = i;
-    i = 0;
+    std::vector<int> sorted = sortedLargerElementsVector(pairs);
 
-    // 2. Perform floor(n/2) comparisons, one per pair, to determine the larger
-    while ( i < pairSize)
-    {
-        if (pair[i][0] > pair[i][1])
-        {
-            int tmp = pair[i][0];
-            pair[i][0] = pair[i][1];
-            pair[i][1] = tmp;
-        }
-        i++;
-    }
+    std::cout << "Print Sorted: ";
+    for (std::vector<int>::iterator it = sorted.begin(); it != sorted.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
 
-    // 3. Recursively sort the floor(n/2) larger elements from each pair, creating
-    //    a sorted sequence S of floor(n/2) of the input elements, in ascending order.
-
-
-
-
-
-
-
-
+    int pairedElement = *std::min_element(this->pmergeVector.begin(), this->pmergeVector.end());
     
-    
+    std::cout << "Print PairedElement: ";
+    std::cout << "Print PairedElement: " << pairedElement;
+    std::cout << std::endl;
+    std::cout << "All Elements: ";
+    for (unsigned int i = 0; i < this->pmergeVector.size(); i++)
+        std::cout << this->pmergeVector[i] << " ";
+    std::cout << std::endl;
+
+    std::vector<int> S = insertPairedElementVector(sorted, pairedElement);
+
+    std::cout << "S: ";
+    for (std::vector<int>::iterator it = S.begin(); it != S.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+
+    std::cout << "pmergeVector: ";
+    for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+
+    this->pmergeVector = insertRemainingVector(this->pmergeVector, S);
+
+    std::cout << "pmergeVector: ";
+    for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
 }
 
 /* printVector:
