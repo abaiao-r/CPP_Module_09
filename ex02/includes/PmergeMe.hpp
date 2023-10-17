@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:33:52 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/17 16:27:23 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/10/17 20:11:19 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ class PmergeMe
         bool validateArgs(int ac, char **av);
         // check if the arguments are positive integers
         bool checkPositiveIntegers(int ac, char **av);
+
+
         // convert av to int and store it in the vector
         void storeVector(int ac, char **av);
         // convert av to int and store it in the list
@@ -94,7 +96,6 @@ class PmergeMe
         std::list<int> sortedLargerElementsList(std::list<int> pairs);
         std::list<int> groupPairsList();
         void doFordJohnsonList(void);
-       
         // print list
         void printList(void);
 
@@ -103,8 +104,6 @@ class PmergeMe
         void printTimeUsedList(void);
         void startTimerList(void);
         void currentTimerList(void);
-
-
 };
 
 #endif

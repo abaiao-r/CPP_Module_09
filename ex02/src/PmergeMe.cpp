@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:38 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/17 18:03:13 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/10/17 20:10:18 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,41 +218,9 @@ std::vector<int> PmergeMe::insertRemainingVector(std::vector<int> S)
 void PmergeMe::doFordJohnsonVector() 
 {
     std::vector<int> pairs = groupPairsVector();
-
-  /*   std::cout << "Print Pairs: ";
-    for (std::vector<int>::iterator it = pairs.begin(); it != pairs.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl; */
-
     std::vector<int> sorted = sortedLargerElementsVector(pairs);
-
-  /*   std::cout << "Print Sorted: ";
-    for (std::vector<int>::iterator it = sorted.begin(); it != sorted.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl; */
-
-   /*  int pairedElement = *std::min_element(this->pmergeVector.begin(), this->pmergeVector.end()); */
-    
-  /*   std::cout << "Print PairedElement: ";
-    std::cout << "Print PairedElement: " << pairedElement;
-    std::cout << std::endl;
-    std::cout << "All Elements: ";
-    for (unsigned int i = 0; i < this->pmergeVector.size(); i++)
-        std::cout << this->pmergeVector[i] << " ";
-    std::cout << std::endl; */
-
     std::vector<int> S = sorted;
 
-   /*  std::cout << "S: ";
-    for (std::vector<int>::iterator it = S.begin(); it != S.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl; */
-
-   /*  std::cout << "pmergeVector: ";
-    for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
- */
     // remove everything from pmergeVector
     this->pmergeVector.clear();
     // insert everything from S into pmergeVector usinge insertRemainingVector
@@ -305,29 +273,7 @@ void PmergeMe::doFordJohnsonList(void)
 {
 
     std::list<int> pairs = groupPairsList();
-
-    //print the pairs and the remainder and pmergeList
-/*     std::cout << "Print Pairs: ";
-    for (std::list<int>::iterator it = pairs.begin(); it != pairs.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-
-    std::cout << "Print Remainder: ";
-    for (std::list<int>::iterator it = this->pmergeListRemainder.begin(); it != this->pmergeListRemainder.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
-
-    std::cout << "Print pmergeList: ";
-    for (std::list<int>::iterator it = this->pmergeList.begin(); it != this->pmergeList.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl; */
-
     std::list<int> sorted = sortedLargerElementsList(pairs);
-
-/*     std::cout << "Print Sorted: ";
-    for (std::list<int>::iterator it = sorted.begin(); it != sorted.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl; */
     std::list<int> S = sorted;
     // delete everything from pmergeList all nodes
     this->pmergeList.clear();
@@ -336,14 +282,6 @@ void PmergeMe::doFordJohnsonList(void)
 
     // stop timer
     currentTimerList();
-
-  /*   std::list<int> sorted = sortedLargerElementsList(pairs);
-    std::list<int> S = sorted;
-    this->pmergeList.clear();
-    this->pmergeList = insertRemainingList(S);
-
-    // stop timer
-    currentTimerList(); */
 }
 
 /* groupPairsList:
@@ -381,7 +319,7 @@ std::list<int> PmergeMe::groupPairsList()
         i += 2;
     }
 
-    return pairs;
+    return (pairs);
 }
 
 /* sortedLargerElementsList:
@@ -443,7 +381,8 @@ void PmergeMe::startTimerList(void)
 }
 
 /* currentTimerList:
-** calculate the time used by the algorithm to sort the list*/
+** calculate the time used by the algorithm to sort the list in microseconds
+** formula: (endTime - startTime) / CLOCKS_PER_SEC * 1000000*/
 void PmergeMe::currentTimerList(void)
 {
     std::clock_t endTime = std::clock();
