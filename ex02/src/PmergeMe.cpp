@@ -6,7 +6,7 @@
 /*   By: abaiao-r <abaiao-r@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 13:58:38 by andrefranci       #+#    #+#             */
-/*   Updated: 2023/10/16 21:38:56 by abaiao-r         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:03:13 by abaiao-r         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,29 +155,39 @@ void PmergeMe::storeList(int ac, char **av)
    should be inserted.
 */
 
-std::vector<int> groupPairsVector(std::vector<int> &pmergeVector) {
+std::vector<int> PmergeMe::groupPairsVector()
+{
     std::vector<int> pairs;
-    size_t n = pmergeVector.size();
+    size_t n = this->pmergeVector.size();
     size_t i = 0;
 
-    while (i < n) {
-        if (i + 1 < n && pmergeVector[i] > pmergeVector[i + 1]) {
-            pairs.push_back(pmergeVector[i]);
-        } else {
-            pairs.push_back(pmergeVector[i + 1]);
+
+    while (i < n) 
+    {
+        if (n % 2 == 1 && i == n - 1)
+        {
+            pairs.push_back(this->pmergeVector[i]);
+            break;
+        }
+        if (i + 1 < n && this->pmergeVector[i] > this->pmergeVector[i + 1]) 
+        {
+            pairs.push_back(this->pmergeVector[i]);
+            this->pmergeVectorRemainder.push_back(this->pmergeVector[i + 1]);
+        } else 
+        {
+            pairs.push_back(this->pmergeVector[i + 1]);
+            this->pmergeVectorRemainder.push_back(this->pmergeVector[i]);
         }
         i += 2;
     }
 
-    if (n % 2 == 1) {
-        pairs.push_back(pmergeVector[n - 1]);
-    }
-
-    return pairs;
+    return (pairs);
 }
 
-std::vector<int> sortedLargerElementsVector(std::vector<int> &pairs) {
-    if (pairs.size() <= 1) {
+std::vector<int> PmergeMe::sortedLargerElementsVector(std::vector<int> &pairs)
+{
+    if (pairs.size() <= 1)
+    {
         return pairs;
     }
 
@@ -193,27 +203,13 @@ std::vector<int> sortedLargerElementsVector(std::vector<int> &pairs) {
     return sorted;
 }
 
-std::vector<int> insertPairedElementVector(std::vector<int> &sorted, int pairedElement) {
-    std::vector<int> result;
-    result.push_back(pairedElement);
-    result.insert(result.end(), sorted.begin(), sorted.end());
-    return result;
-}
+std::vector<int> PmergeMe::insertRemainingVector(std::vector<int> S)
+{
 
-std::vector<int> insertRemainingVector(std::vector<int> &pmergeVector, std::vector<int> &S) {
-    std::vector<int> remaining;
-
-    for (size_t i = 0; i < pmergeVector.size(); ++i)
+    for (std::vector<int>::iterator it = this->pmergeVectorRemainder.begin(); it != this->pmergeVectorRemainder.end(); ++it)
     {
-        if (std::find(S.begin(), S.end(), pmergeVector[i]) == S.end()) {
-            remaining.push_back(pmergeVector[i]);
-        }
-    }
-
-    for (size_t i = 0; i < remaining.size(); ++i)
-    {
-        std::vector<int>::iterator it = std::lower_bound(S.begin(), S.end(), remaining[i]);
-        S.insert(it, remaining[i]);
+        std::vector<int>::iterator low = std::lower_bound(S.begin(), S.end(), *it);
+        S.insert(low, *it);
     }
 
     return S;
@@ -221,48 +217,49 @@ std::vector<int> insertRemainingVector(std::vector<int> &pmergeVector, std::vect
 
 void PmergeMe::doFordJohnsonVector() 
 {
-    std::vector<int> pairs = groupPairsVector(this->pmergeVector);
+    std::vector<int> pairs = groupPairsVector();
 
-    std::cout << "Print Pairs: ";
+  /*   std::cout << "Print Pairs: ";
     for (std::vector<int>::iterator it = pairs.begin(); it != pairs.end(); ++it)
         std::cout << *it << " ";
-    std::cout << std::endl;
+    std::cout << std::endl; */
 
     std::vector<int> sorted = sortedLargerElementsVector(pairs);
 
-    std::cout << "Print Sorted: ";
+  /*   std::cout << "Print Sorted: ";
     for (std::vector<int>::iterator it = sorted.begin(); it != sorted.end(); ++it)
         std::cout << *it << " ";
-    std::cout << std::endl;
+    std::cout << std::endl; */
 
-    int pairedElement = *std::min_element(this->pmergeVector.begin(), this->pmergeVector.end());
+   /*  int pairedElement = *std::min_element(this->pmergeVector.begin(), this->pmergeVector.end()); */
     
-    std::cout << "Print PairedElement: ";
+  /*   std::cout << "Print PairedElement: ";
     std::cout << "Print PairedElement: " << pairedElement;
     std::cout << std::endl;
     std::cout << "All Elements: ";
     for (unsigned int i = 0; i < this->pmergeVector.size(); i++)
         std::cout << this->pmergeVector[i] << " ";
-    std::cout << std::endl;
+    std::cout << std::endl; */
 
-    std::vector<int> S = insertPairedElementVector(sorted, pairedElement);
+    std::vector<int> S = sorted;
 
-    std::cout << "S: ";
+   /*  std::cout << "S: ";
     for (std::vector<int>::iterator it = S.begin(); it != S.end(); ++it)
         std::cout << *it << " ";
-    std::cout << std::endl;
+    std::cout << std::endl; */
 
-    std::cout << "pmergeVector: ";
+   /*  std::cout << "pmergeVector: ";
     for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
         std::cout << *it << " ";
     std::cout << std::endl;
+ */
+    // remove everything from pmergeVector
+    this->pmergeVector.clear();
+    // insert everything from S into pmergeVector usinge insertRemainingVector
+    this->pmergeVector = insertRemainingVector(S);
 
-    this->pmergeVector = insertRemainingVector(this->pmergeVector, S);
-
-    std::cout << "pmergeVector: ";
-    for (std::vector<int>::iterator it = this->pmergeVector.begin(); it != this->pmergeVector.end(); ++it)
-        std::cout << *it << " ";
-    std::cout << std::endl;
+    // stop timer
+    currentTimerVector();
 }
 
 /* printVector:
@@ -275,12 +272,192 @@ void PmergeMe::printVector(void)
     std::cout << std::endl;
 }
 
+/* startTimerVector:
+** start the timer*/
+void PmergeMe::startTimerVector(void)
+{
+    this->startTimeVector = std::clock();
+}
+
+/* currentTimerVector:
+** calculate the time used by the algorithm to sort the vector*/
+void PmergeMe::currentTimerVector(void)
+{
+    std::clock_t endTime = std::clock();
+    double elapsedTime = static_cast<double>(endTime - this->startTimeVector) / CLOCKS_PER_SEC * 1000000;
+    this->currentTimeVector = elapsedTime;
+}
+
 /* printTimeUsedVector:
 ** calculate the time used by the algorithm to sort the vector
 ** print the time used*/
 void PmergeMe::printTimeUsedVector(void)
 {
-    std::cout << "Time used by the algorithm to sort the vector: ";
+    std::cout << "Time to process a range of " << this->pmergeVector.size() 
+        << " elements with std::vector: ";
+    std::cout << this->currentTimeVector << " us" << std::endl;
     std::cout << std::endl;
 }
 
+/* doFordJohnsonList:
+** Ford-Johnson algorithm for std::list*/
+void PmergeMe::doFordJohnsonList(void)
+{
+
+    std::list<int> pairs = groupPairsList();
+
+    //print the pairs and the remainder and pmergeList
+/*     std::cout << "Print Pairs: ";
+    for (std::list<int>::iterator it = pairs.begin(); it != pairs.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+
+    std::cout << "Print Remainder: ";
+    for (std::list<int>::iterator it = this->pmergeListRemainder.begin(); it != this->pmergeListRemainder.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+
+    std::cout << "Print pmergeList: ";
+    for (std::list<int>::iterator it = this->pmergeList.begin(); it != this->pmergeList.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl; */
+
+    std::list<int> sorted = sortedLargerElementsList(pairs);
+
+/*     std::cout << "Print Sorted: ";
+    for (std::list<int>::iterator it = sorted.begin(); it != sorted.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl; */
+    std::list<int> S = sorted;
+    // delete everything from pmergeList all nodes
+    this->pmergeList.clear();
+    // insert everything from S into pmergeList using insertRemainingList
+    this->pmergeList = insertRemainingList(S);
+
+    // stop timer
+    currentTimerList();
+
+  /*   std::list<int> sorted = sortedLargerElementsList(pairs);
+    std::list<int> S = sorted;
+    this->pmergeList.clear();
+    this->pmergeList = insertRemainingList(S);
+
+    // stop timer
+    currentTimerList(); */
+}
+
+/* groupPairsList:
+** group pairs of elements in the list*/
+std::list<int> PmergeMe::groupPairsList()
+{
+    std::list<int> pairs;
+    size_t n = this->pmergeList.size();
+    size_t i = 0;
+
+    while (i < n) 
+    {
+        if (n % 2 == 1 && i == n - 1)
+        {
+            pairs.push_back(this->pmergeList.back());
+            break;
+        }
+
+        std::list<int>::iterator it = this->pmergeList.begin();
+        std::advance(it, i);
+        int current = *it;
+
+        std::advance(it, 1);
+        int next = *it;
+
+        if (it != this->pmergeList.end() && current > next) 
+        {
+            pairs.push_back(current);
+            this->pmergeListRemainder.push_back(next);
+        } else 
+        {
+            pairs.push_back(next);
+            this->pmergeListRemainder.push_back(current);
+        }
+        i += 2;
+    }
+
+    return pairs;
+}
+
+/* sortedLargerElementsList:
+** sort the larger elements in the list*/
+std::list<int> PmergeMe::sortedLargerElementsList(std::list<int> pairs)
+{
+    if (pairs.size() <= 1)
+    {
+        return pairs;
+    }
+
+    size_t mid = pairs.size() / 2;
+
+    std::list<int> left;
+    std::list<int>::iterator it = pairs.begin();
+    std::advance(it, mid);
+    std::copy(pairs.begin(), it, std::back_inserter(left));
+
+    std::list<int> right;
+    std::copy(it, pairs.end(), std::back_inserter(right));
+
+    left = sortedLargerElementsList(left);
+    right = sortedLargerElementsList(right);
+
+    std::list<int> sorted;
+    std::merge(left.begin(), left.end(), right.begin(), right.end(), std::inserter(sorted, sorted.begin()));
+
+    return sorted;
+}
+
+/* insertRemainingList:
+** insert the remaining elements in the list*/
+std::list<int> PmergeMe::insertRemainingList(std::list<int> S)
+{
+    for (std::list<int>::iterator it = this->pmergeListRemainder.begin(); it != this->pmergeListRemainder.end(); ++it)
+    {
+        std::list<int>::iterator low = std::lower_bound(S.begin(), S.end(), *it);
+        S.insert(low, *it);
+    }
+
+    return S;
+}
+
+/* printList:
+** print the list*/
+void PmergeMe::printList(void)
+{
+    std::cout << "List: ";
+    for (std::list<int>::iterator it = this->pmergeList.begin(); it != this->pmergeList.end(); ++it)
+        std::cout << *it << " ";
+    std::cout << std::endl;
+}
+
+/* startTimerList:
+** start the timer*/
+void PmergeMe::startTimerList(void)
+{
+    this->startTimeList = std::clock();
+}
+
+/* currentTimerList:
+** calculate the time used by the algorithm to sort the list*/
+void PmergeMe::currentTimerList(void)
+{
+    std::clock_t endTime = std::clock();
+    double elapsedTime = static_cast<double>(endTime - this->startTimeList) / CLOCKS_PER_SEC * 1000000;
+    this->currentTimeList = elapsedTime;
+}
+
+/* printTimeUsedList:
+** calculate the time used by the algorithm to sort the list
+** print the time used*/
+void PmergeMe::printTimeUsedList(void)
+{
+    std::cout << "Time to process a range of " << this->pmergeList.size() 
+        << " elements with std::list: ";
+    std::cout << this->currentTimeList << " us" << std::endl;
+    std::cout << std::endl;
+}
